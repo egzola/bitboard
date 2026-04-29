@@ -19,5 +19,40 @@
     "name": "Solana",
     "icon": "https://coin-images.coingecko.com/coins/images/4128/large/solana.png",
     "ord": 3
+  },
+  {
+    "ticker": "xrp",
+    "id": "ripple",
+    "name": "XRP",
+    "icon": "https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png",
+    "ord": 4
+  },
+  {
+    "ticker": "ada",
+    "id": "cardano",
+    "name": "Cardano",
+    "icon": "https://coin-images.coingecko.com/coins/images/975/large/cardano.png",
+    "ord": 5
+  },
+  {
+    "ticker": "trx",
+    "id": "tron",
+    "name": "TRON",
+    "icon": "https://coin-images.coingecko.com/coins/images/1094/large/photo_2026-04-13_09-59-16.png",
+    "ord": 6
+  },
+  {
+    "ticker": "kas",
+    "id": "kaspa",
+    "name": "Kaspa",
+    "icon": "https://coin-images.coingecko.com/coins/images/25751/large/kaspa-icon-exchanges.png",
+    "ord": 7
+  },
+  {
+    "ticker": "nat",
+    "id": "dmt-nat",
+    "name": "DMT-NAT",
+    "icon": "https://coin-images.coingecko.com/coins/images/69881/large/NAT.png",
+    "ord": 8
   }
 ]
