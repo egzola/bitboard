@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A customizable crypto price dashboard with lightning-fast updates and a sleek, user-friendly interface.">
+    <meta name="application-name" content="bitBoard">
+    <meta name="author" content="egzola">
+    <link rel="icon" type="image/png" href="icon.png">
+    <meta name="theme-color" content="#0f1115">
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <title>bitBoard</title>
+</head>
+
+<body>
+    <header class="header">
+        <img src="logo.png" id="logo" alt="bitBoard logo" />
+
+        <div class="top">
+
+            <div class="live">
+                <span class="dot"></span>
+                Live Data
+            </div>
+
+
+            <div class="search-wrap">
+                <input id="search" placeholder="Search coin..." oninput="typing()" autocomplete="off">
+                <div id="suggest"></div>
+            </div>
+
+            <select id="currency" onchange="changeCurrency()" data-current="<%= settings.currency %>">
+                <% settings.currencies.forEach(c=> { %>
+                    <option value="<%= c %>">
+                        <%= c.toUpperCase() %>
+                    </option>
+                    <% }) %>
+            </select>
+        </div>
+    </header>
+    <div id='grid' class='grid'></div>
+
+    <footer>
+        <span>Developed by egzola</span>
+        <span class="footer-sep">·</span>
+        <button id="donateBtn" class="donate-btn">⚡ Tip with Lightning</button>
+    </footer>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src='/script.js'></script>
+
+</html>
