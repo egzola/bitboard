@@ -10,9 +10,9 @@ description: >-
 
   Build your own watchlist, reorder assets freely, and track the market at a glance.
 
-  bitBoard features a clean dark interface designed for desktops, tablets, secondary monitors, and always-on displays.
+  bitBoard features a clean dark interface optimized for desktops, tablets, secondary monitors, and always-on displays.
 
-  Supports multiple quote currencies and live market refreshes using public pricing data providers.
+  Supports multiple quote currencies with live market refreshes using public pricing data providers.
 developer: egzola
 website: https://github.com/egzola/bitboard
 repo: https://github.com/egzola/bitboard
@@ -22,4 +22,4 @@ submission: https://github.com/getumbrel/umbrel-apps/pull/5082
 path: ""
 dependencies: []
 gallery: []
-releaseNotes: ""
+releaseNotes: First public release.
