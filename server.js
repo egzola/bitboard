@@ -1,47 +1,56 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const app = express();
 const PORT = process.env.PORT || 3711;
-const DATA = path.join(__dirname, 'data', 'cards.json');
+const app = express();
 const apiRoutes = require('./api');
 const { searchCoin, clearCache } = require('./prices');
 
-const SETTINGS = path.join(__dirname, 'data', 'settings.json');
+const isDocker = fs.existsSync('/.dockerenv');
+
+const dataDir = isDocker
+    ? '/data'
+    : path.join(__dirname, 'data');
+
+const cardsFile = path.join(dataDir, 'cards.json');
+const settingsFile = path.join(dataDir, 'settings.json');
+
+console.log('Docker:', isDocker);
+console.log('Data dir:', dataDir);
 
 
 function readSettings() {
     // check if folder exists
-    if (!fs.existsSync(path.dirname(SETTINGS))) {
-        fs.mkdirSync(path.dirname(SETTINGS), { recursive: true });
+    if (!fs.existsSync(path.dirname(settingsFile))) {
+        fs.mkdirSync(path.dirname(settingsFile), { recursive: true });
     }
 
 
     //check if settings file exists
-    if (!fs.existsSync(SETTINGS)) {
+    if (!fs.existsSync(settingsFile)) {
         const defaultSettings = {
             currency: "usd",
             currencies: ["aed", "ars", "aud", "bdt", "bhd", "brl", "btc", "cad", "chf", "clp", "cny", "czk", "dkk", "dot", "eth", "eur", "gbp", "hkd", "huf", "idr", "ils", "inr", "jpy", "krw", "kwd", "link", "lkr", "ltc", "mmk", "mxn", "myr", "ngn", "nok", "nzd", "php", "pkr", "pln", "rub", "sar", "sek", "sgd", "sol", "thb", "try", "twd", "uah", "usd", "vef", "vnd", "xrp", "zar"]
         };
-        fs.writeFileSync(SETTINGS, JSON.stringify(defaultSettings, null, 2));
+        fs.writeFileSync(settingsFile, JSON.stringify(defaultSettings, null, 2));
         return defaultSettings;
     }
 
-    return JSON.parse(fs.readFileSync(SETTINGS, 'utf8'));
+    return JSON.parse(fs.readFileSync(settingsFile, 'utf8'));
 }
 
 function saveSettings(v) {
-    fs.writeFileSync(SETTINGS, JSON.stringify(v, null, 2));
+    fs.writeFileSync(settingsFile, JSON.stringify(v, null, 2));
 }
 
 
 function readCards() {
     //check if data folder exists
-    if (!fs.existsSync(path.dirname(DATA))) {
-        fs.mkdirSync(path.dirname(DATA), { recursive: true });
+    if (!fs.existsSync(path.dirname(cardsFile))) {
+        fs.mkdirSync(path.dirname(cardsFile), { recursive: true });
     }
     //check if data file exists
-    if (!fs.existsSync(DATA)) {
+    if (!fs.existsSync(cardsFile)) {
         const defaultData = [
             {
                 "ticker": "btc",
@@ -57,14 +66,14 @@ function readCards() {
                 "icon": "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png",
                 "ord": 2
             }];
-        fs.writeFileSync(DATA, JSON.stringify(defaultData, null, 2));
+        fs.writeFileSync(cardsFile, JSON.stringify(defaultData, null, 2));
     }
 
-    return JSON.parse(fs.readFileSync(DATA, 'utf8')).sort((a, b) => a.ord - b.ord);
+    return JSON.parse(fs.readFileSync(cardsFile, 'utf8')).sort((a, b) => a.ord - b.ord);
 }
 
 function saveCards(v) {
-    fs.writeFileSync(DATA, JSON.stringify(v, null, 2));
+    fs.writeFileSync(cardsFile, JSON.stringify(v, null, 2));
 }
 
 app.set('view engine', 'ejs');
@@ -83,6 +92,10 @@ app.get('/', (req, res) => res.render('index', {
     cards: readCards(),
     settings: readSettings(),
 }));
+
+app.get('/health', (req, res) => {
+    res.json({ ok: true });
+});
 
 app.post('/add', async (req, res) => {
     const t = (req.body.ticker || '').toLowerCase().trim();
@@ -123,7 +136,7 @@ app.post('/remove', (req, res) => {
 });
 
 app.get('/tickers', async (req, res) => {
-    let tickers = await readCards();
+    const tickers = readCards();
     res.json(tickers);
 });
 
@@ -154,4 +167,4 @@ app.post('/currency', (req, res) => {
 
 
 app.use('/', apiRoutes);
-app.listen(PORT, () => console.log('BitBoard on ' + PORT));
+app.listen(PORT, () => console.log('BitBoard listening on port: ' + PORT));
