@@ -5,7 +5,7 @@ router.get('/search', async (req, res) => {
     try {
         const q = (req.query.q || '').trim();
         if (!q) return res.json([]);
-        const r = await fetch('https://api.coingecko.com/api/v3/search?query=' + encodeURIComponent(q));
+        const r = await fetch('https://api.coingecko.com/api/v3/search?x_cg_demo_api_key=&query=' + encodeURIComponent(q));
         const j = await r.json();
         res.json((j.coins || []).slice(0, 8).map(x => ({
             ticker: x.symbol,

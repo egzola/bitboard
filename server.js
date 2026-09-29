@@ -30,7 +30,7 @@ function readSettings() {
     if (!fs.existsSync(settingsFile)) {
         const defaultSettings = {
             currency: "usd",
-            currencies: ["aed", "ars", "aud", "bdt", "bhd", "brl", "btc", "cad", "chf", "clp", "cny", "czk", "dkk", "dot", "eth", "eur", "gbp", "hkd", "huf", "idr", "ils", "inr", "jpy", "krw", "kwd", "link", "lkr", "ltc", "mmk", "mxn", "myr", "ngn", "nok", "nzd", "php", "pkr", "pln", "rub", "sar", "sek", "sgd", "sol", "thb", "try", "twd", "uah", "usd", "vef", "vnd", "xrp", "zar"]
+            currencies: ["ars", "aud", "brl", "cad", "chf", "cny", "eur", "gbp", "hkd", "inr", "jpy", "krw", "mxn", "sgd", "usd", "zar"]
         };
         fs.writeFileSync(settingsFile, JSON.stringify(defaultSettings, null, 2));
         return defaultSettings;

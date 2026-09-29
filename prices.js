@@ -3,7 +3,7 @@
 const cache = { ts: 0, data: null };
 
 async function searchCoin(query) {
-    const r = await fetch('https://api.coingecko.com/api/v3/search?query=' + encodeURIComponent(query), {
+    const r = await fetch('https://api.coingecko.com/api/v3/search?x_cg_demo_api_key=&query=' + encodeURIComponent(query), {
         headers: {
             'User-Agent': 'bitBoard/1.0',
             'Accept': 'application/json'
@@ -30,7 +30,7 @@ async function getPrices(cards, currency = 'usd') {
 
     const url =
         'https://api.coingecko.com/api/v3/coins/markets' +
-        '?vs_currency=' + currency +
+        '?x_cg_demo_api_key=&vs_currency=' + currency +
         '&sparkline=true' +
         '&price_change_percentage=24h' +
         '&ids=' + ids;
