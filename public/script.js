@@ -8,7 +8,7 @@ function fmt(n) {
 
     let cur = currentCurrency.toLowerCase();
     let nfmt = 'en-US';
-    if(cur == 'brl') nfmt = 'pt-BR';
+    if (cur == 'brl') nfmt = 'pt-BR';
     let min = 2;
     let max = 4;
     if (n > 100) {
@@ -19,7 +19,7 @@ function fmt(n) {
         min = 4;
         max = 4;
     }
-    if(n < 0.1) {
+    if (n < 0.1) {
         min = 8;
         max = 8;
     }
@@ -277,7 +277,7 @@ function drawLineChart(el, vals) {
 function updateCountdown() {
     tickyCount++;
 
-    if(tickyCount >= 60) {
+    if (tickyCount >= 60) {
         tickyCount = 0;
         ticky();
         return;
@@ -287,8 +287,8 @@ function updateCountdown() {
         .querySelectorAll('.chg.pending')
         .forEach(el => {
             el.textContent =
-                'Next update in ' + (60-tickyCount) + 's';
-        });    
+                'Next update in ' + (60 - tickyCount) + 's';
+        });
 }
 
 
@@ -323,34 +323,198 @@ async function mountCards() {
 
 
 function donateModal() {
-
-    const addr = "thanksalot@walletofsatoshi.com"
+    const lightningAddr = "thanksalot@walletofsatoshi.com";
+    const bitcoinAddr = "bc1q64rwm7nduv6w5x8tzptt7p8g0m4deduka46rts";
 
     Swal.fire({
-        title: "Send a Lightning tip ⚡",
+        title: "Support the project ⚡",
         html: `
-      <div style="margin-top:10px;font-size:16px;color:#888">
-        If this tool is useful to you, consider a tip to support development and maintenance. Thank you! 🙏
-        <br><br>
-        Lightning Address ⚡
-      </div>
+            <div style="margin-top:10px;font-size:15px;color:#888">
+                If this tool is useful to you, consider a tip to support
+                development and maintenance. Thank you! 🙏
+            </div>
 
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=lightning:${addr}"
-           style="margin:10px auto;display:block">
+            <!-- Tabs -->
+            <div style="
+                display:flex;
+                margin-top:20px;
+                border-bottom:1px solid #ddd;
+            ">
+                <button
+                    id="tabLightning"
+                    style="
+                        flex:1;
+                        padding:10px;
+                        border:none;
+                        background:none;
+                        font-weight:bold;
+                        color:#0fa90f;
+                        border-bottom:2px solid #0fa90f;
+                        cursor:pointer;
+                    "
+                >
+                    ⚡ Lightning
+                </button>
 
+                <button
+                    id="tabOnchain"
+                    style="
+                        flex:1;
+                        padding:10px;
+                        border:none;
+                        background:none;
+                        font-weight:bold;
+                        color:#888;
+                        border-bottom:2px solid transparent;
+                        cursor:pointer;
+                    "
+                >
+                    ₿ On-chain
+                </button>
+            </div>
 
-      <div style="margin-top:4px;font-size:14px;font-family:monospace">
-        ${addr}
-      </div>
-    `,
-        confirmButtonText: "Copy Lightning address",
-        confirmButtonColor: '#0fa90f',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            copyText(addr)
+            <!-- Lightning content -->
+            <div id="lightningContent" style="margin-top:15px;">
+                <img
+                    src="./donate_qrcode.png"
+                    style="
+                        width:180px;
+                        max-width:80%;
+                        margin:10px auto;
+                        display:block;
+                    "
+                />
+
+                <div style="
+                    font-size:13px;
+                    font-family:monospace;
+                    word-break:break-all;
+                    margin:10px 0;
+                ">
+                    ${lightningAddr}
+                </div>
+
+                <button
+                    id="copyLightning"
+                    class="swal2-confirm swal2-styled"
+                    style="background:#0fa90f"
+                >
+                    Copy Lightning address
+                </button>
+            </div>
+
+            <!-- On-chain content -->
+            <div
+                id="onchainContent"
+                style="
+                    margin-top:15px;
+                    display:none;
+                "
+            >
+                <img
+                    src="./donate_btc_qrcode.png"
+                    style="
+                        width:180px;
+                        max-width:80%;
+                        margin:10px auto;
+                        display:block;
+                    "
+                />
+
+                <div style="
+                    font-size:13px;
+                    font-family:monospace;
+                    word-break:break-all;
+                    margin:10px 0;
+                ">
+                    ${bitcoinAddr}
+                </div>
+
+                <button
+                    id="copyBitcoin"
+                    class="swal2-confirm swal2-styled"
+                    style="background:#f7931a"
+                >
+                    Copy Bitcoin address
+                </button>
+            </div>
+        `,
+
+        showConfirmButton: false,
+        showCloseButton: true,
+
+        didOpen: () => {
+
+            const tabLightning =
+                document.getElementById("tabLightning");
+
+            const tabOnchain =
+                document.getElementById("tabOnchain");
+
+            const lightningContent =
+                document.getElementById("lightningContent");
+
+            const onchainContent =
+                document.getElementById("onchainContent");
+
+            // Lightning tab
+            tabLightning.addEventListener("click", () => {
+
+                lightningContent.style.display = "block";
+                onchainContent.style.display = "none";
+
+                tabLightning.style.color = "#0fa90f";
+                tabLightning.style.borderBottom =
+                    "2px solid #0fa90f";
+
+                tabOnchain.style.color = "#888";
+                tabOnchain.style.borderBottom =
+                    "2px solid transparent";
+            });
+
+            // On-chain tab
+            tabOnchain.addEventListener("click", () => {
+
+                lightningContent.style.display = "none";
+                onchainContent.style.display = "block";
+
+                tabOnchain.style.color = "#f7931a";
+                tabOnchain.style.borderBottom =
+                    "2px solid #f7931a";
+
+                tabLightning.style.color = "#888";
+                tabLightning.style.borderBottom =
+                    "2px solid transparent";
+            });
+
+            // Copy Lightning
+            document
+                .getElementById("copyLightning")
+                .addEventListener("click", () => {
+
+                    copyText(lightningAddr);
+
+                    Swal.showValidationMessage(
+                        "Lightning address copied! ⚡"
+                    );
+                });
+
+            // Copy Bitcoin
+            document
+                .getElementById("copyBitcoin")
+                .addEventListener("click", () => {
+
+                    copyText(bitcoinAddr);
+
+                    Swal.showValidationMessage(
+                        "Bitcoin address copied! ₿"
+                    );
+                });
         }
-    })
+    });
 }
+
+
 
 
 function copyText(text) {
